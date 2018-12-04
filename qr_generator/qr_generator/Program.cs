@@ -61,22 +61,26 @@ namespace qr_generator
                 //20
                 //121
                 //Head Table
-                imageName.Add(DrawImage("1", "Oversea", "1", "1"));
-                imageName.Add(DrawImage("12", "Building 1", "12", "12"));
-                imageName.Add(DrawImage("123", "Consulting 1", "123", "123"));
-                imageName.Add(DrawImage("1234", "Infrastructure 1", "1234", "1234"));
-                imageName.Add(DrawImage("12345", "Business Services", "12345", "12345"));
+                //imageName.Add(DrawImage("1", "Oversea", "1", "1", "Crystal", "Sin-Yu", "Cheung", "1"));
+                //imageName.Add(DrawImage("12", "Building 1", "12", "12", "Shawn", "Shaokun", "Chen", "0"));
+                //imageName.Add(DrawImage("123", "Consulting 1", "123", "123", "Crystal", "Sin-Yu", "Cheung", "1"));
+                //imageName.Add(DrawImage("1234", "Infrastructure 1", "1234", "1234", "Crystal", "Sin-Yu", "Cheung", "1"));
+                //imageName.Add(DrawImage("12345", "Business Services", "12345", "12345", "Lawrence", "Wai-Yiu", "Kan", "1"));
 
+                //for (int i = 1955; i <= 2044; i++)
+                //{
+                //    imageName.Add(DrawImage("", "", "", i.ToString(), "", "", "", ""));
+                //}
 
                 ConvertToPdf();
                 Console.WriteLine("End");
                 Console.WriteLine("Press enter to exit");
             }
-            //Console.ReadKey();
+            Console.ReadKey();
             
         }
 
-        public static string DrawImage(string staffNo, string groupName, string tableNo, string ticketNo)
+        public static string DrawImage(string staffNo, string groupName, string tableNo, string ticketNo, string englishname, string fistname, string lastname, string parnter)
         {
             Console.WriteLine("Generating images...");
 
@@ -92,73 +96,40 @@ namespace qr_generator
                     encoder.QRCodeScale = 24;
                     Bitmap qrBMP = encoder.Encode(ticketNo);
 
-                    graphicsImage.DrawImage(qrBMP, 1663, 300, 300, 300);
-
+                    graphicsImage.DrawImage(qrBMP, 1730, 300, 180, 180);
+                    Color StringColor = System.Drawing.ColorTranslator.FromHtml("#000");//direct color adding
                     if (Convert.ToInt32(ticketNo) >= 1955 && Convert.ToInt32(ticketNo) <= 2044)
                     {
+                        int x = 1746;
+                        graphicsImage.DrawString(ticketNo, new Font("arial", 10,
+                        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 869));
                     }
                     else {
+                        int x = 1570;
+                      
+
+                        graphicsImage.DrawString(lastname + " " + fistname, new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 510));
+                        graphicsImage.DrawString(englishname + " + Partner", new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 560));
+
                         //Set the alignment based on the coordinates   
-                        StringFormat stringformat = new StringFormat();
-                        stringformat.Alignment = StringAlignment.Far;
-                        stringformat.LineAlignment = StringAlignment.Far;
-                        Color StringColor = System.Drawing.ColorTranslator.FromHtml("#000");//direct color adding
+                        x = 1728;
+                        graphicsImage.DrawString(staffNo, new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 628));
 
-                        int x = 0;
-                        switch (staffNo.Length)
-                        {
-                            case 1: x = 1763; break;
-                            case 2: x = 1785; break; //+12
-                            case 3: x = 1806; break; //+21  +9
-                            case 4: x = 1832; break; //35 + 9
-                            case 5: x = 1850; break; //35 + 9
-                        }
 
-                        graphicsImage.DrawString(staffNo, new Font("arial", 10,
-                        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 680),
-                        stringformat);
-
-                        x = 1773;
-                        switch (groupName.Length)
-                        {
-                            case 7: x = 1862; break;
-                            case 10: x = 1883; break;
-                            case 12: x = 1937; break;
-                            case 16: x = 1982; break;
-                            case 17: x = 2042; break;
-                        }
-
+                        x = 1700;
                         graphicsImage.DrawString(groupName, new Font("arial", 10,
-                        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 760),
-                        stringformat);
+                        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 708));
 
-                        switch (tableNo.Length)
-                        {
-                            case 1: x = 1767; break;
-                            case 2: x = 1788; break; //+12
-                            case 3: x = 1813; break; //+21  +9
-                            case 4: x = 1834; break; //35 + 9
-                            case 5: x = 1861; break; //35 + 9
-                        }
+                        x = 1740;
                         graphicsImage.DrawString(tableNo, new Font("arial", 10,
-                        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 841),
-                        stringformat);
+                        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 789));
 
-
-                        switch (ticketNo.Length)
-                        {
-                            case 1: x = 1780; break;
-                            case 2: x = 1802; break; //+12
-                            case 3: x = 1824; break; //+21  +9
-                            case 4: x = 1850; break; //35 + 9
-                            case 5: x = 1870; break; //35 + 9
-                        }
+                        x = 1746;
                         graphicsImage.DrawString(ticketNo, new Font("arial", 10,
-                        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 921),
-                        stringformat);
+                        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 869));
                     }
-                    bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/" + staffNo + ".png");
-                    //bitmap.Save(Response.OutputStream, ImageFormat.Png);
+                    //bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/" + staffNo + ".png");
+                    bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/ticket_" + ticketNo + ".png");
                 }
                 catch (Exception ex)
                 {
@@ -173,15 +144,30 @@ namespace qr_generator
         public static void ConvertToPdf()
         {
             Console.WriteLine("Converting to pdf...");
-            for (int i = 0; i < imageName.Count; i++)
+
+            DirectoryInfo d = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg");//Assuming Test is your Folder
+            FileInfo[] Files = d.GetFiles("*.png"); //Getting Text files
+
+            foreach (FileInfo file in Files)
             {
+                Console.WriteLine(file.FullName);
                 using (MagickImageCollection collection = new MagickImageCollection())
                 {
-                    collection.Add(new MagickImage(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/" + imageName[i]));
+                    collection.Add(new MagickImage(file.FullName));
                     // Create pdf file with two pages
-                    collection.Write(AppDomain.CurrentDomain.BaseDirectory + @"ticketPdf/" + imageName[i].Replace(".png", ".pdf"));
+                    collection.Write(AppDomain.CurrentDomain.BaseDirectory + @"ticketPdf/" + file.Name.Replace(".png", ".pdf"));
                 }
             }
+
+            //for (int i = 0; i < imageName.Count; i++)
+            //{
+            //    using (MagickImageCollection collection = new MagickImageCollection())
+            //    {
+            //        collection.Add(new MagickImage(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/" + imageName[i]));
+            //        // Create pdf file with two pages
+            //        collection.Write(AppDomain.CurrentDomain.BaseDirectory + @"ticketPdf/" + imageName[i].Replace(".png", ".pdf"));
+            //    }
+            //}
         }
 
         public static void ReadExcel()
@@ -199,6 +185,10 @@ namespace qr_generator
                 if (sheet.GetRow(row) != null) //null is when the row only contains empty cells 
                 {
                     IRow irow = sheet.GetRow(row);
+                    ICell englishNameCell = irow.GetCell(4);
+                    ICell firstNameCell = irow.GetCell(5);
+                    ICell lastNameCell = irow.GetCell(6);
+
                     ICell groupCell = irow.GetCell(0);
                     ICell staffCell = irow.GetCell(2);
                     ICell ticketNoCell = irow.GetCell(10);
@@ -237,6 +227,11 @@ namespace qr_generator
                             tableNo = tableNoCell.StringCellValue;
                         }
 
+                        string englishNAme = englishNameCell.StringCellValue;
+                        string firstName = firstNameCell.StringCellValue;
+                        string lastName = lastNameCell.StringCellValue;
+
+                        DrawImage(staff, group, tableNo, tickeNo, englishNAme, firstName, lastName, "");
                     }
                 }
             }
