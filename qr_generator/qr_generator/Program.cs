@@ -61,7 +61,7 @@ namespace qr_generator
                 //20
                 //121
                 //Head Table
-                //imageName.Add(DrawImage("2829", "2229", "EAB", "Head Table", "1001", "KWOK Ka-Yue,", "Michael + Partner"));
+                //imageName.Add(DrawImage("2829", "2229", "Infrastructure 1 (TungChung New Town Ext)", "Head Table", "1001", "KWOK Ka-Yue,", "Michael + Partner"));
                 //imageName.Add(DrawImage("12", "Building 1", "12", "12", "Shawn", "Shaokun", "Chen", "0"));
                 //imageName.Add(DrawImage("123", "Consulting 1", "123", "123", "Crystal", "Sin-Yu", "Cheung", "1"));
                 //imageName.Add(DrawImage("1234", "Infrastructure 1", "1234", "1234", "Crystal", "Sin-Yu", "Cheung", "1"));
@@ -120,8 +120,21 @@ namespace qr_generator
 
 
                         x = 1572;
-                        graphicsImage.DrawString(groupName, new Font("arial", 10,
-                        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 536));
+                        if (groupName.Contains("("))
+                        {
+                            
+                            string[] groups = groupName.Split('(');
+                            graphicsImage.DrawString(groups[0].TrimEnd(), new Font("arial", 7,
+                            FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 545));
+
+                            graphicsImage.DrawString("(" + groups[1].TrimStart(), new Font("arial", 7,
+                            FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 577));
+                        }
+                        else
+                        {
+                            graphicsImage.DrawString(groupName, new Font("arial", 10,
+                            FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 536));
+                        }
 
                         x = 1618;
                         graphicsImage.DrawString(tableNo, new Font("arial", 10,
@@ -242,7 +255,12 @@ namespace qr_generator
                             staffNo = staffCell.StringCellValue;
                         }
 
-                        DrawImage(qrcode, staffNo, group, tableNo, tickeNo, firstLine, secondLine);
+                        //if ((Convert.ToInt32(tickeNo) >= 1442 && Convert.ToInt32(tickeNo) <= 1600) || Convert.ToInt32(tickeNo) >= 1721 && Convert.ToInt32(tickeNo) <= 1734)
+                        //if ((Convert.ToInt32(tickeNo) >= 1574 && Convert.ToInt32(tickeNo) <= 1600) )
+                        if (Convert.ToInt32(tickeNo) == 1595)
+                        {
+                            DrawImage(qrcode, staffNo, group, tableNo, tickeNo, firstLine, secondLine);
+                        }
                     }
                 }
             }
