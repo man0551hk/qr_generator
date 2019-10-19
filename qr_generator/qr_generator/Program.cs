@@ -19,16 +19,16 @@ namespace qr_generator
         public static List<string> imageName = new List<string>();
         static void Main(string[] args)
         {
-            if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "ticket_17x7.png"))
-            {
-                Console.WriteLine("No ticket.png found!");
-            }
-            else if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "ticket.xlsx"))
-            {
-                Console.WriteLine("No ticket.xlsx found!");
-            }
-            else
-            {
+            //if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "ticket_17x7.png"))
+            //{
+            //    Console.WriteLine("No ticket.png found!");
+            //}
+            //else if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "ticket.xlsx"))
+            //{
+            //    Console.WriteLine("No ticket.xlsx found!");
+            //}
+            //else
+            //{
                 if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "ticketImg"))
                 {
                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "ticketImg");
@@ -77,7 +77,7 @@ namespace qr_generator
                 //ConvertToPdf();
                 Console.WriteLine("End");
                 Console.WriteLine("Press enter to exit");
-            }
+            //}
             //Console.ReadKey();
             
         }
@@ -86,71 +86,99 @@ namespace qr_generator
         {
             Console.WriteLine("Generating images...");
 
-                try
+            try
+            {
+                string filename = AppDomain.CurrentDomain.BaseDirectory + "ticket.jpg";
+
+                //creating a image object
+                System.Drawing.Image bitmap = (System.Drawing.Image)Bitmap.FromFile(filename); // set image 
+
+                //draw the image object using a Graphics object
+                Graphics graphicsImage = Graphics.FromImage(bitmap);
+
+                MessagingToolkit.QRCode.Codec.QRCodeEncoder encoder = new MessagingToolkit.QRCode.Codec.QRCodeEncoder();
+                encoder.QRCodeScale = 24;
+                Bitmap qrBMP = encoder.Encode(qrcode);
+                graphicsImage.DrawImage(qrBMP, 1000, 180, 350, 350);
+                Color StringColor = System.Drawing.ColorTranslator.FromHtml("#000");
+
+                if (staffNo == "(leave it blank)")
                 {
-                    //creating a image object
-                    System.Drawing.Image bitmap = (System.Drawing.Image)Bitmap.FromFile(AppDomain.CurrentDomain.BaseDirectory + "ticket_17x7.jpg"); // set image 
+                    staffNo = "";
+                }
+                else if (staffNo == "N/A - Guest")
+                {
+                    staffNo = "";
+                }
+                if (groupName == "(leave it blank)")
+                {
+                    groupName = "";
+                }
+                else if (groupName == "N/A - Guest")
+                {
+                    groupName = "";
+                }
 
-                    //draw the image object using a Graphics object
-                    Graphics graphicsImage = Graphics.FromImage(bitmap);
 
-                    MessagingToolkit.QRCode.Codec.QRCodeEncoder encoder = new MessagingToolkit.QRCode.Codec.QRCodeEncoder();
-                    encoder.QRCodeScale = 24;
-                    Bitmap qrBMP = encoder.Encode(qrcode);
+                int x = 300;
+                graphicsImage.DrawString(firstLine, new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 120));
+                x = 375;
+                graphicsImage.DrawString(staffNo, new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 258));
+                x = 451;
+                graphicsImage.DrawString(groupName, new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 398));
+                x = 385;
+                graphicsImage.DrawString(tableNo, new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 536));
+                //if (Convert.ToInt32(ticketNo) >= 1955 && Convert.ToInt32(ticketNo) <= 2044)
+                //{
 
-                    graphicsImage.DrawImage(qrBMP, 1618, 130, 180, 180);
-                    Color StringColor = System.Drawing.ColorTranslator.FromHtml("#000");//direct color adding
-                    if (Convert.ToInt32(ticketNo) >= 1955 && Convert.ToInt32(ticketNo) <= 2044)
-                    {
-
-                        int x = 1627;
-                        graphicsImage.DrawString(ticketNo, new Font("arial", 10,
-                        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 700));
-                    }
-                    else {
-                        int x = 1455;
+                //    int x = 1627;
+                //    graphicsImage.DrawString(ticketNo, new Font("arial", 10,
+                //    FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 700));
+                //}
+                //else {
+                //    
                       
 
-                        graphicsImage.DrawString(firstLine + ",", new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 350));
-                        graphicsImage.DrawString(secondLine, new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 400));
+                //    
+                //    graphicsImage.DrawString(secondLine, new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 400));
 
-                        //Set the alignment based on the coordinates   
-                        x = 1610;
-                        graphicsImage.DrawString(staffNo, new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 454));
+                //    //Set the alignment based on the coordinates   
+                //    x = 1610;
+                //   
 
 
-                        x = 1572;
-                        if (groupName.Contains("("))
-                        {
+                //    x = 1572;
+                //    if (groupName.Contains("("))
+                //    {
                             
-                            string[] groups = groupName.Split('(');
-                            graphicsImage.DrawString(groups[0].TrimEnd(), new Font("arial", 7,
-                            FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 545));
+                //        string[] groups = groupName.Split('(');
+                //        graphicsImage.DrawString(groups[0].TrimEnd(), new Font("arial", 7,
+                //        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 545));
 
-                            graphicsImage.DrawString("(" + groups[1].TrimStart(), new Font("arial", 7,
-                            FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 577));
-                        }
-                        else
-                        {
-                            graphicsImage.DrawString(groupName, new Font("arial", 10,
-                            FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 536));
-                        }
+                //        graphicsImage.DrawString("(" + groups[1].TrimStart(), new Font("arial", 7,
+                //        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 577));
+                //    }
+                //    else
+                //    {
+                //        graphicsImage.DrawString(groupName, new Font("arial", 10,
+                //        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 536));
+                //    }
 
-                        x = 1618;
-                        graphicsImage.DrawString(tableNo, new Font("arial", 10,
-                        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 620));
+                //    x = 1618;
+                //    graphicsImage.DrawString(tableNo, new Font("arial", 10,
+                //    FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 620));
 
-                        x = 1627;
-                        graphicsImage.DrawString(ticketNo, new Font("arial", 10,
-                        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 700));
-                    }
-                    //bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/" + staffNo + ".png");
-                    bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/ticket_" + ticketNo + ".jpg");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("StaffNo. " + staffNo + " " + ex.Message);
-                }
+                //    x = 1627;
+                //    graphicsImage.DrawString(ticketNo, new Font("arial", 10,
+                //    FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 700));
+                //}
+                //bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/" + staffNo + ".png");
+                bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/ticket_" + ticketNo + ".jpg");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("StaffNo. " + staffNo + " " + ex.Message);
+            }
     
 
             return staffNo + ".png";
@@ -196,26 +224,35 @@ namespace qr_generator
             }
 
             ISheet sheet = hssfwb.GetSheetAt(0);
-            for (int row = 3; row <= sheet.LastRowNum; row++) // start from row 4
+
+            
+            DrawImage("3921", "256094", "H516", "1", "chan1", "CHAN, IVAN LONG-YAT", "");
+            //int ticketNo = 1092;
+            //for (int row = 5013; row <= 5043; row++)
+            //{
+            //    DrawImage(row.ToString(), "", "", "", ticketNo.ToString(), "", "");
+            //    ticketNo += 1;
+            //}
+
+            for (int row = 0; row <= sheet.LastRowNum; row++) // start from row 4
             {
                 if (sheet.GetRow(row) != null) //null is when the row only contains empty cells 
                 {
                     IRow irow = sheet.GetRow(row);
-                    ICell ticketNoCell = irow.GetCell(0);
-                    ICell tableNoCell = irow.GetCell(1);
-                    ICell nameCell = irow.GetCell(2);
-                    ICell groupCell = irow.GetCell(3);
+     
+                    ICell nameCell = irow.GetCell(0);
+                    ICell staffCell = irow.GetCell(1);
+                    ICell groupCell = irow.GetCell(2);
+                    ICell tableNoCell = irow.GetCell(3);
                     ICell qrcodeCell = irow.GetCell(4);
-                    ICell staffCell = irow.GetCell(5);
 
 
-                    if (groupCell != null && qrcodeCell != null && ticketNoCell != null && tableNoCell != null && staffCell != null)
+
+                    if (nameCell != null && staffCell != null && groupCell != null && tableNoCell != null && qrcodeCell != null)
                     {
                         string group = groupCell.StringCellValue;
                         string name = nameCell.StringCellValue;
-                        string[] names = name.Split(',');
-                        string firstLine = names[0].TrimEnd();
-                        string secondLine = names[1].TrimStart();
+                       
                         string qrcode = "";
                         try
                         {
@@ -226,15 +263,15 @@ namespace qr_generator
                             qrcode = qrcodeCell.StringCellValue;
                         }
 
-                        string tickeNo = "";
-                        try
-                        {
-                            tickeNo = ticketNoCell.NumericCellValue.ToString();
-                        }
-                        catch
-                        {
-                            tickeNo = ticketNoCell.StringCellValue;
-                        }
+                        string tickeNo = (row + 1).ToString();
+                        //try
+                        //{
+                        //    tickeNo = ticketNoCell.NumericCellValue.ToString();
+                        //}
+                        //catch
+                        //{
+                        //    tickeNo = ticketNoCell.StringCellValue;
+                        //}
                         string tableNo = "";
                         try
                         {
@@ -257,10 +294,10 @@ namespace qr_generator
 
                         //if ((Convert.ToInt32(tickeNo) >= 1442 && Convert.ToInt32(tickeNo) <= 1600) || Convert.ToInt32(tickeNo) >= 1721 && Convert.ToInt32(tickeNo) <= 1734)
                         //if ((Convert.ToInt32(tickeNo) >= 1574 && Convert.ToInt32(tickeNo) <= 1600) )
-                        if (Convert.ToInt32(tickeNo) == 1595)
-                        {
-                            DrawImage(qrcode, staffNo, group, tableNo, tickeNo, firstLine, secondLine);
-                        }
+                        //if (Convert.ToInt32(tickeNo) == 1595)
+                        //{
+                        DrawImage(qrcode, staffNo, group, tableNo, tickeNo, name, "");
+                        //}
                     }
                 }
             }
