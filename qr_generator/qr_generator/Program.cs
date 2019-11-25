@@ -11,78 +11,37 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Drawing.Text;
+using System.Windows.Forms;
 
 namespace qr_generator
 {
     class Program
     {
         public static List<string> imageName = new List<string>();
+        public static PrivateFontCollection pfc = new PrivateFontCollection();
+        public static List<string> strList = new List<string>();
+        public static List<string> strList2 = new List<string>();
         static void Main(string[] args)
         {
-            //if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "ticket_17x7.png"))
-            //{
-            //    Console.WriteLine("No ticket.png found!");
-            //}
-            //else if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "ticket.xlsx"))
-            //{
-            //    Console.WriteLine("No ticket.xlsx found!");
-            //}
-            //else
-            //{
-                if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "ticketImg"))
-                {
-                    Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "ticketImg");
-                }
-                if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "ticketPdf"))
-                {
-                    Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "ticketPdf");
-                }
-                ReadExcel();
-
-                //Oversea
-                //Building 1
-                //Consulting 1
-                //Infrastructure 1
-                //Business Services
-
-                //1
-                //12
-                //838
-                //2222
-                //73471
-
-                //1
-                //12
-                //123
-                //1000
-                //9999
-
-                //1
-                //20
-                //121
-                //Head Table
-                //imageName.Add(DrawImage("2829", "2229", "Infrastructure 1 (TungChung New Town Ext)", "Head Table", "1001", "KWOK Ka-Yue,", "Michael + Partner"));
-                //imageName.Add(DrawImage("12", "Building 1", "12", "12", "Shawn", "Shaokun", "Chen", "0"));
-                //imageName.Add(DrawImage("123", "Consulting 1", "123", "123", "Crystal", "Sin-Yu", "Cheung", "1"));
-                //imageName.Add(DrawImage("1234", "Infrastructure 1", "1234", "1234", "Crystal", "Sin-Yu", "Cheung", "1"));
-                //imageName.Add(DrawImage("12345", "Business Services", "12345", "12345", "Lawrence", "Wai-Yiu", "Kan", "1"));
-
-                //int thisQr = 3773;
-                //for (int i = 1955; i <= 2044; i++)
-                //{
-                //    DrawImage(thisQr.ToString(), "", "", "", i.ToString(), "", "");
-                //    thisQr += 1;
-                //}
-
-                //ConvertToPdf();
-                Console.WriteLine("End");
-                Console.WriteLine("Press enter to exit");
-            //}
-            //Console.ReadKey();
-            
+            pfc.AddFontFile(AppDomain.CurrentDomain.BaseDirectory + "Palatino.ttf");
+            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "ticketImg"))
+            {
+                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "ticketImg");
+            }
+            if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "ticketPdf"))
+            {
+                Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "ticketPdf");
+            }
+            AddList();
+            AddList2();
+            ReadExcel();
+            Console.WriteLine("End");
+            Console.WriteLine("Press enter to exit");            
         }
 
-        public static string DrawImage(string qrcode, string staffNo, string groupName, string tableNo, string ticketNo, string firstLine, string secondLine)
+        //DrawImage(title, lastName, firstName, perferredName, empNumber);
+        public static string DrawImage(string title, string lastName, string firstName, string perferredName, string empNumber)
         {
             Console.WriteLine("Generating images...");
 
@@ -93,95 +52,61 @@ namespace qr_generator
                 //creating a image object
                 System.Drawing.Image bitmap = (System.Drawing.Image)Bitmap.FromFile(filename); // set image 
 
-                //draw the image object using a Graphics object
+                ////draw the image object using a Graphics object
                 Graphics graphicsImage = Graphics.FromImage(bitmap);
+                graphicsImage.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+
+                Pen blackPen = new Pen(Color.White, 40);
+                Rectangle rect = new Rectangle(1458, 251, 210, 210);
+                graphicsImage.DrawRectangle(blackPen, rect);
+
 
                 MessagingToolkit.QRCode.Codec.QRCodeEncoder encoder = new MessagingToolkit.QRCode.Codec.QRCodeEncoder();
                 encoder.QRCodeScale = 24;
-                Bitmap qrBMP = encoder.Encode(qrcode);
-                graphicsImage.DrawImage(qrBMP, 1000, 180, 350, 350);
-                Color StringColor = System.Drawing.ColorTranslator.FromHtml("#000");
+                Bitmap qrBMP = encoder.Encode(empNumber);
+                graphicsImage.DrawImage(qrBMP, 1453, 245, 220, 220);
+                Color StringColor = System.Drawing.ColorTranslator.FromHtml("#fff");
 
-                if (staffNo == "(leave it blank)")
+                int middle = 1558;
+                int fontSize = 55;
+                foreach (string str in strList)
                 {
-                    staffNo = "";
+                    if (str == empNumber) 
+                    {
+                        fontSize = 45;
+                        break;
+                    }
                 }
-                else if (staffNo == "N/A - Guest")
+                foreach (string str in strList2)
                 {
-                    staffNo = "";
+                    if (str == empNumber)
+                    {
+                        fontSize = 35;
+                        break;
+                    }
                 }
-                if (groupName == "(leave it blank)")
-                {
-                    groupName = "";
-                }
-                else if (groupName == "N/A - Guest")
-                {
-                    groupName = "";
-                }
+                string firstLine = title + " " + lastName + " " + firstName;
+                Font font = new Font(pfc.Families[0], fontSize, FontStyle.Regular, GraphicsUnit.Pixel);
+                int halfWidth = TextRenderer.MeasureText(firstLine, font).Width / 2;
+                graphicsImage.DrawString(firstLine, font, new SolidBrush(StringColor), new Point(middle - halfWidth + 17, 487));
 
+                halfWidth = TextRenderer.MeasureText(perferredName, font).Width /2 ;
+                graphicsImage.DrawString(perferredName, font, new SolidBrush(StringColor), new Point(middle - halfWidth + 17, 547));
 
-                int x = 300;
-                graphicsImage.DrawString(firstLine, new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 120));
-                x = 375;
-                graphicsImage.DrawString(staffNo, new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 258));
-                x = 451;
-                graphicsImage.DrawString(groupName, new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 398));
-                x = 385;
-                graphicsImage.DrawString(tableNo, new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 536));
-                //if (Convert.ToInt32(ticketNo) >= 1955 && Convert.ToInt32(ticketNo) <= 2044)
-                //{
+                font = new Font(pfc.Families[0], 55, FontStyle.Regular, GraphicsUnit.Pixel);
+                halfWidth = TextRenderer.MeasureText(empNumber, font).Width / 2;
+                graphicsImage.DrawString(empNumber, font, new SolidBrush(StringColor), new Point(middle - halfWidth + 5 ,720));
 
-                //    int x = 1627;
-                //    graphicsImage.DrawString(ticketNo, new Font("arial", 10,
-                //    FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 700));
-                //}
-                //else {
-                //    
-                      
-
-                //    
-                //    graphicsImage.DrawString(secondLine, new Font("arial", 10, FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 400));
-
-                //    //Set the alignment based on the coordinates   
-                //    x = 1610;
-                //   
-
-
-                //    x = 1572;
-                //    if (groupName.Contains("("))
-                //    {
-                            
-                //        string[] groups = groupName.Split('(');
-                //        graphicsImage.DrawString(groups[0].TrimEnd(), new Font("arial", 7,
-                //        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 545));
-
-                //        graphicsImage.DrawString("(" + groups[1].TrimStart(), new Font("arial", 7,
-                //        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 577));
-                //    }
-                //    else
-                //    {
-                //        graphicsImage.DrawString(groupName, new Font("arial", 10,
-                //        FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 536));
-                //    }
-
-                //    x = 1618;
-                //    graphicsImage.DrawString(tableNo, new Font("arial", 10,
-                //    FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 620));
-
-                //    x = 1627;
-                //    graphicsImage.DrawString(ticketNo, new Font("arial", 10,
-                //    FontStyle.Regular), new SolidBrush(StringColor), new Point(x, 700));
-                //}
-                //bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/" + staffNo + ".png");
-                bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/ticket_" + ticketNo + ".jpg");
+                bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/ticket_" + empNumber + ".jpg");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("StaffNo. " + staffNo + " " + ex.Message);
+                Console.WriteLine(ex.Message);
+                Console.ReadKey();
             }
-    
 
-            return staffNo + ".png";
+
+            return empNumber + ".png";
         
         }
 
@@ -225,82 +150,120 @@ namespace qr_generator
 
             ISheet sheet = hssfwb.GetSheetAt(0);
 
-            
-            DrawImage("3921", "256094", "H516", "1", "chan1", "CHAN, IVAN LONG-YAT", "");
-            //int ticketNo = 1092;
-            //for (int row = 5013; row <= 5043; row++)
-            //{
-            //    DrawImage(row.ToString(), "", "", "", ticketNo.ToString(), "", "");
-            //    ticketNo += 1;
-            //}
 
-            for (int row = 0; row <= sheet.LastRowNum; row++) // start from row 4
+            for (int row = 1; row <= sheet.LastRowNum; row++) // start from row 4
             {
                 if (sheet.GetRow(row) != null) //null is when the row only contains empty cells 
                 {
                     IRow irow = sheet.GetRow(row);
      
-                    ICell nameCell = irow.GetCell(0);
-                    ICell staffCell = irow.GetCell(1);
-                    ICell groupCell = irow.GetCell(2);
-                    ICell tableNoCell = irow.GetCell(3);
-                    ICell qrcodeCell = irow.GetCell(4);
+                    ICell titleCell = irow.GetCell(0);
+                    ICell lastNameCell = irow.GetCell(1);
+                    ICell firstNameCell = irow.GetCell(2);
+                    ICell perferredNameCell = irow.GetCell(3);
+                    ICell empNumberCell = irow.GetCell(4);
 
-
-
-                    if (nameCell != null && staffCell != null && groupCell != null && tableNoCell != null && qrcodeCell != null)
+                    if (titleCell != null && lastNameCell != null && firstNameCell != null && perferredNameCell != null && empNumberCell != null)
                     {
-                        string group = groupCell.StringCellValue;
-                        string name = nameCell.StringCellValue;
-                       
-                        string qrcode = "";
+                        string title = titleCell.StringCellValue;
+                        string lastName = lastNameCell.StringCellValue;
+                        string firstName = firstNameCell.StringCellValue;
+                        string perferredName = perferredNameCell.StringCellValue;
+                        string empNumber = "";
                         try
                         {
-                            qrcode = qrcodeCell.NumericCellValue.ToString();
+                            empNumber = empNumberCell.StringCellValue;
                         }
-                        catch
+                        catch (Exception ex)
                         {
-                            qrcode = qrcodeCell.StringCellValue;
+                            empNumber = Convert.ToInt32(empNumberCell.NumericCellValue).ToString();
                         }
-
-                        string tickeNo = (row + 1).ToString();
-                        //try
-                        //{
-                        //    tickeNo = ticketNoCell.NumericCellValue.ToString();
-                        //}
-                        //catch
-                        //{
-                        //    tickeNo = ticketNoCell.StringCellValue;
-                        //}
-                        string tableNo = "";
-                        try
+                        if (empNumber == "")
                         {
-                            tableNo = tableNoCell.NumericCellValue.ToString();
+                            File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "log.txt", "Row " + row.ToString() + System.Environment.NewLine);
                         }
-                        catch
+                        else 
                         {
-                            tableNo = tableNoCell.StringCellValue;
+                            DrawImage(title, lastName, firstName, perferredName, empNumber);
                         }
-
-                        string staffNo = "";
-                        try
-                        {
-                            staffNo = staffCell.NumericCellValue.ToString();
-                        }
-                        catch
-                        {
-                            staffNo = staffCell.StringCellValue;
-                        }
-
-                        //if ((Convert.ToInt32(tickeNo) >= 1442 && Convert.ToInt32(tickeNo) <= 1600) || Convert.ToInt32(tickeNo) >= 1721 && Convert.ToInt32(tickeNo) <= 1734)
-                        //if ((Convert.ToInt32(tickeNo) >= 1574 && Convert.ToInt32(tickeNo) <= 1600) )
-                        //if (Convert.ToInt32(tickeNo) == 1595)
-                        //{
-                        DrawImage(qrcode, staffNo, group, tableNo, tickeNo, name, "");
-                        //}
+                        Console.WriteLine(title + " " + lastName + " " + firstName + " " + perferredName + " " + empNumber);
+                        //
                     }
+                    else {
+                        File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "log.txt", "Row " + row.ToString() + System.Environment.NewLine);
+                    }
+                    //break;
                 }
             }
+        }
+    
+        public static void AddList()
+        {
+            strList.Add("1803");
+            strList.Add("13721");
+            strList.Add("17820");
+            strList.Add("28616");
+            strList.Add("30270");
+            strList.Add("33112");
+            strList.Add("36290");
+            strList.Add("39494");
+            strList.Add("42078");
+            strList.Add("42993");
+            strList.Add("45308");
+            strList.Add("45658");
+            strList.Add("50455");
+            strList.Add("51615");
+            strList.Add("52521");
+            strList.Add("52666");
+            strList.Add("52956");
+            strList.Add("53643");
+            strList.Add("54021");
+            strList.Add("58151");
+            strList.Add("58453");
+            strList.Add("59089");
+            strList.Add("60883");
+            strList.Add("60971");
+            strList.Add("68336");
+            strList.Add("70281");
+            strList.Add("71770");
+            strList.Add("72476");
+            strList.Add("72681");
+            strList.Add("72798");
+            strList.Add("72824");
+            strList.Add("73649");
+            strList.Add("74043");
+            strList.Add("74065");
+            strList.Add("75792");
+            strList.Add("76491");
+            strList.Add("77193");
+            strList.Add("77743");
+            strList.Add("78088");
+            
+        }
+
+        public static void AddList2()
+        {
+            strList.Add("45308");
+            strList.Add("45658");
+            strList.Add("51615");
+            strList.Add("52521");
+            strList.Add("52956");
+            strList.Add("53643");
+            strList.Add("54021");
+            strList.Add("58453");
+            strList.Add("59089");
+            strList.Add("60336");
+            strList.Add("60883");
+            strList.Add("60971");
+            strList.Add("68336");
+            strList.Add("70281");
+            strList.Add("71770");
+            strList.Add("72681");
+            strList.Add("72824");
+            strList.Add("73649");
+            strList.Add("74065");
+            strList.Add("75792");
+            strList.Add("76491");
         }
     }
 }
