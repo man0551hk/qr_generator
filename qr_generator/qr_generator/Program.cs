@@ -26,7 +26,7 @@ namespace qr_generator
         public static List<string> strList4 = new List<string>();
         static void Main(string[] args)
         {
-            pfc.AddFontFile(AppDomain.CurrentDomain.BaseDirectory + "Palatino.ttf");
+            //pfc.AddFontFile(AppDomain.CurrentDomain.BaseDirectory + "Palatino.ttf");
             if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "ticketImg"))
             {
                 Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "ticketImg");
@@ -35,17 +35,17 @@ namespace qr_generator
             {
                 Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "ticketPdf");
             }
-            AddList();
-            AddList2();
-            AddList3();
-            AddList4();
+            //AddList();
+            //AddList2();
+            //AddList3();
+            //AddList4();
             ReadExcel();
             Console.WriteLine("End");
             Console.WriteLine("Press enter to exit");            
         }
 
         //DrawImage(title, lastName, firstName, perferredName, empNumber);
-        public static string DrawImage(string title, string lastName, string firstName, string perferredName, string empNumber, int qrCode)
+        public static string DrawImage(string name, string department, string vip, string qrCode)
         {
             Console.WriteLine("Generating images...");
 
@@ -68,61 +68,78 @@ namespace qr_generator
                 MessagingToolkit.QRCode.Codec.QRCodeEncoder encoder = new MessagingToolkit.QRCode.Codec.QRCodeEncoder();
                 encoder.QRCodeScale = 24;
                 Bitmap qrBMP = encoder.Encode(qrCode.ToString());
-                graphicsImage.DrawImage(qrBMP, 1453, 245, 220, 220);
-                Color StringColor = System.Drawing.ColorTranslator.FromHtml("#fff");
+                graphicsImage.DrawImage(qrBMP, 300, 920, 180, 180);
+                Color StringColor = System.Drawing.ColorTranslator.FromHtml("#000");
 
-                int middle = 1558;
-                int fontSize = 55;
-                foreach (string str in strList)
-                {
-                    if (str == empNumber) 
-                    {
-                        fontSize = 45;
-                    }
-                }
-                foreach (string str2 in strList2)
-                {
-                    if (str2 == empNumber)
-                    {
-                        fontSize = 40;
-                    }
-                }
-                foreach (string str3 in strList3)
-                {
-                    if (str3 == empNumber)
-                    {
-                        fontSize = 35;
-                    }
-                }
+                int middle = 387;
+                Font font = new Font("Arial", 36, FontStyle.Regular, GraphicsUnit.Pixel);
+                int halfWidth = TextRenderer.MeasureText("Oknha Leng Sokea", font).Width / 2;
+                //graphicsImage.DrawString("Oknha Leng Sokea", font, new SolidBrush(StringColor), new Point(387, 1050));
+                //graphicsImage.DrawString("Oknha Leng Sokea", font, new SolidBrush(StringColor), new Point(148, 1050));
+                //graphicsImage.DrawString("(Anthony Tan)", font, new SolidBrush(StringColor), new Point(610, 1090));
+                graphicsImage.DrawString("Oknha Leng Sokea", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
+                halfWidth = TextRenderer.MeasureText("(Anthony Tan)", font).Width / 2;
+                graphicsImage.DrawString("(Anthony Tan)", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1150));
 
-                foreach (string str4 in strList4)
-                {
-                    if (str4 == empNumber)
-                    {
-                        fontSize = 30;
-                    }
-                }
+                halfWidth = TextRenderer.MeasureText("National Immidiate", font).Width / 2;
+                graphicsImage.DrawString("National Immidiate", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                halfWidth = TextRenderer.MeasureText("Past President", font).Width / 2;
+                graphicsImage.DrawString("Past President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
 
-                if (empNumber == "52956")
-                {
-                    fontSize = 25;
-                }
+                halfWidth = TextRenderer.MeasureText("VIP", font).Width / 2;
+                graphicsImage.DrawString("VIP", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1290));
+                //int middle = 1558;
+                //int fontSize = 55;
+                //foreach (string str in strList)
+                //{
+                //    if (str == empNumber) 
+                //    {
+                //        fontSize = 45;
+                //    }
+                //}
+                //foreach (string str2 in strList2)
+                //{
+                //    if (str2 == empNumber)
+                //    {
+                //        fontSize = 40;
+                //    }
+                //}
+                //foreach (string str3 in strList3)
+                //{
+                //    if (str3 == empNumber)
+                //    {
+                //        fontSize = 35;
+                //    }
+                //}
 
-                string firstLine = title + " " + lastName + " " + firstName;
-                Font font = new Font(pfc.Families[0], fontSize, FontStyle.Regular, GraphicsUnit.Pixel);
-                int halfWidth = TextRenderer.MeasureText(firstLine, font).Width / 2;
-                graphicsImage.DrawString(firstLine, font, new SolidBrush(StringColor), new Point(middle - halfWidth + 17, 487));
+                //foreach (string str4 in strList4)
+                //{
+                //    if (str4 == empNumber)
+                //    {
+                //        fontSize = 30;
+                //    }
+                //}
 
-                fontSize = 55;
-                font = new Font(pfc.Families[0], fontSize, FontStyle.Regular, GraphicsUnit.Pixel);
-                halfWidth = TextRenderer.MeasureText(perferredName, font).Width /2 ;
-                graphicsImage.DrawString(perferredName, font, new SolidBrush(StringColor), new Point(middle - halfWidth + 17, 547));
+                //if (empNumber == "52956")
+                //{
+                //    fontSize = 25;
+                //}
 
-                font = new Font(pfc.Families[0], 55, FontStyle.Regular, GraphicsUnit.Pixel);
-                halfWidth = TextRenderer.MeasureText(empNumber, font).Width / 2;
-                graphicsImage.DrawString(empNumber, font, new SolidBrush(StringColor), new Point(middle - halfWidth + 5 ,720));
+                //string firstLine = title + " " + lastName + " " + firstName;
+                //Font font = new Font(pfc.Families[0], fontSize, FontStyle.Regular, GraphicsUnit.Pixel);
+                //int halfWidth = TextRenderer.MeasureText(firstLine, font).Width / 2;
+                //graphicsImage.DrawString(firstLine, font, new SolidBrush(StringColor), new Point(middle - halfWidth + 17, 487));
 
-                bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/ticket_" + qrCode + "_" + empNumber + ".jpg");
+                //fontSize = 55;
+                //font = new Font(pfc.Families[0], fontSize, FontStyle.Regular, GraphicsUnit.Pixel);
+                //halfWidth = TextRenderer.MeasureText(perferredName, font).Width /2 ;
+                //graphicsImage.DrawString(perferredName, font, new SolidBrush(StringColor), new Point(middle - halfWidth + 17, 547));
+
+                //font = new Font(pfc.Families[0], 55, FontStyle.Regular, GraphicsUnit.Pixel);
+                //halfWidth = TextRenderer.MeasureText(empNumber, font).Width / 2;
+                //graphicsImage.DrawString(empNumber, font, new SolidBrush(StringColor), new Point(middle - halfWidth + 5 ,720));
+
+                bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/ticket_" + qrCode + ".jpg");
                
             }
             catch (Exception ex)
@@ -132,7 +149,7 @@ namespace qr_generator
             }
 
 
-            return empNumber + ".png";
+            return qrCode + ".png";
         
         }
 
@@ -168,22 +185,23 @@ namespace qr_generator
         public static void ReadExcel()
         {
             Console.WriteLine("Start...");
-            XSSFWorkbook hssfwb;
-            using (FileStream file = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "ticket.xlsx", FileMode.Open, FileAccess.Read))
-            {
-                hssfwb = new XSSFWorkbook(file);
-            }
+            DrawImage("Oknha Leng Sokea (Anthony Tan)", "JCI Cambodia National President", "VIP", "D73");
+            //XSSFWorkbook hssfwb;
+            //using (FileStream file = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "ticket.xlsx", FileMode.Open, FileAccess.Read))
+            //{
+            //    hssfwb = new XSSFWorkbook(file);
+            //}
 
-            ISheet sheet = hssfwb.GetSheetAt(0);
+            //ISheet sheet = hssfwb.GetSheetAt(0);
 
-            int qrCode = 11546;
+            //int qrCode = 11546;
 
-            qrCode = 12507;
-            for (int row = 1; row <= 30; row++) // start from row 4
-            {
-                DrawImage("", "", "", "", "", qrCode);
-                qrCode++;
-            }
+            //qrCode = 12507;
+            //for (int row = 1; row <= 30; row++) // start from row 4
+            //{
+            //    DrawImage("", "", "", "", "", qrCode);
+            //    qrCode++;
+            //}
 
             //for (int row = 1; row <= sheet.LastRowNum; row++) // start from row 4
             //{
