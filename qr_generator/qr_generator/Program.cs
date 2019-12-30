@@ -218,10 +218,10 @@ namespace qr_generator
                 }                    
                 else if (department == "JCI Singapore National President")
                 {
-                    halfWidth = TextRenderer.MeasureText("70th Anniversary", font).Width / 2;
-                    graphicsImage.DrawString("70th Anniversary", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("Ball Chairman", font).Width / 2;
-                    graphicsImage.DrawString("Ball Chairman", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                    halfWidth = TextRenderer.MeasureText("JCI Singapore", font).Width / 2;
+                    graphicsImage.DrawString("JCI Singapore", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                    halfWidth = TextRenderer.MeasureText("National Presidentn", font).Width / 2;
+                    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
                 }                               
                 else if (department == "JCI Mongolia National President")
                 {
@@ -375,65 +375,69 @@ namespace qr_generator
             //int qrCode = 11546;
 
             //qrCode = 12507;
-            for (int row = 13218; row <= 13237; row++) // start from row 4
+
+
+            for (int row = 1; row <= sheet.LastRowNum; row++) // start from row 4
+            {
+                if (sheet.GetRow(row) != null) //null is when the row only contains empty cells 
+                {
+                    IRow irow = sheet.GetRow(row);
+
+                    ICell nameCell = irow.GetCell(0);
+                    ICell departmentCell = irow.GetCell(1);
+                    ICell typeCell = irow.GetCell(2);
+                    ICell tableNameCell = irow.GetCell(3);
+                    ICell qrCodeCell = irow.GetCell(4);
+
+                    if (nameCell != null && departmentCell != null && typeCell != null && tableNameCell != null && qrCodeCell != null)
+                    {
+                        string name = nameCell.StringCellValue;
+                        string department = departmentCell.StringCellValue;
+                        string type = typeCell.StringCellValue;
+                        string tableName = tableNameCell.StringCellValue;
+                        string qrCode = qrCodeCell.NumericCellValue.ToString();
+
+                        if (type == "Normal") {
+                            type = "";
+                        }
+                        DrawImage(name, department, type, tableName, qrCode);
+
+                        //string title = titleCell.StringCellValue;
+                        //string lastName = lastNameCell.StringCellValue;
+                        //string firstName = firstNameCell.StringCellValue;
+                        //string perferredName = perferredNameCell.StringCellValue;
+                        //string empNumber = "";
+                        //try
+                        //{
+                        //    empNumber = empNumberCell.StringCellValue;
+                        //}
+                        //catch (Exception ex)
+                        //{
+                        //    empNumber = Convert.ToInt32(empNumberCell.NumericCellValue).ToString();
+                        //}
+                        //if (empNumber == "")
+                        //{
+                        //    File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "log.txt", "Row " + row.ToString() + System.Environment.NewLine);
+                        //}
+                        //else
+                        //{
+                        //    DrawImage(title, lastName, firstName, perferredName, empNumber, qrCode);
+                        //}
+
+
+                    }
+                    else
+                    {
+                        File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "log.txt", "Row " + row.ToString() + System.Environment.NewLine);
+                    }
+
+                }
+            }
+            for (int row = 13851; row <= 13870; row++) // start from row 4
             {
                 DrawImage("", "", "", "", row.ToString());
-    
+
             }
-
-            //for (int row = 1; row <= sheet.LastRowNum; row++) // start from row 4
-            //{
-            //    if (sheet.GetRow(row) != null) //null is when the row only contains empty cells 
-            //    {
-            //        IRow irow = sheet.GetRow(row);
-
-            //        ICell nameCell = irow.GetCell(0);
-            //        ICell departmentCell = irow.GetCell(1);
-            //        ICell typeCell = irow.GetCell(2);
-            //        ICell tableNameCell = irow.GetCell(3);
-            //        ICell qrCodeCell = irow.GetCell(4);
-
-            //        if (nameCell != null && departmentCell != null && typeCell != null && tableNameCell != null && qrCodeCell != null)
-            //        {
-            //            string name = nameCell.StringCellValue;
-            //            string department = departmentCell.StringCellValue;
-            //            string type = typeCell.StringCellValue;
-            //            string tableName = tableNameCell.StringCellValue;
-            //            string qrCode = qrCodeCell.NumericCellValue.ToString();
-
-            //            DrawImage(name, department, type, tableName, qrCode);
-
-            //            //string title = titleCell.StringCellValue;
-            //            //string lastName = lastNameCell.StringCellValue;
-            //            //string firstName = firstNameCell.StringCellValue;
-            //            //string perferredName = perferredNameCell.StringCellValue;
-            //            //string empNumber = "";
-            //            //try
-            //            //{
-            //            //    empNumber = empNumberCell.StringCellValue;
-            //            //}
-            //            //catch (Exception ex)
-            //            //{
-            //            //    empNumber = Convert.ToInt32(empNumberCell.NumericCellValue).ToString();
-            //            //}
-            //            //if (empNumber == "")
-            //            //{
-            //            //    File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "log.txt", "Row " + row.ToString() + System.Environment.NewLine);
-            //            //}
-            //            //else
-            //            //{
-            //            //    DrawImage(title, lastName, firstName, perferredName, empNumber, qrCode);
-            //            //}
-
-                        
-            //        }
-            //        else
-            //        {
-            //            File.AppendAllText(AppDomain.CurrentDomain.BaseDirectory + "log.txt", "Row " + row.ToString() + System.Environment.NewLine);
-            //        }
-                   
-            //    }
-            //}
         }
     
         public static void AddList()
