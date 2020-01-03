@@ -250,9 +250,29 @@ namespace qr_generator
                     graphicsImage.DrawString("Chartered Institute of", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
                     halfWidth = TextRenderer.MeasureText("Logistics and Transport", font).Width / 2;
                     graphicsImage.DrawString("Logistics and Transport", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }                  
-                          
-
+                }   
+                else if (department ==  "Rotary International District 3450 ")
+                {
+                    halfWidth = TextRenderer.MeasureText("Rotary International", font).Width / 2;
+                    graphicsImage.DrawString("Rotary International", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                    halfWidth = TextRenderer.MeasureText("District 3450", font).Width / 2;
+                    graphicsImage.DrawString("District 3450", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                } 
+                else if (department ==  "JCI Vietnam National President")
+                {
+                    halfWidth = TextRenderer.MeasureText("JCI Vietnam", font).Width / 2;
+                    graphicsImage.DrawString("JCI Vietnam", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
+                    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                }      
+                else if (department ==  "JCI Philippine National President")
+                {
+                    halfWidth = TextRenderer.MeasureText("JCI Philippine", font).Width / 2;
+                    graphicsImage.DrawString("JCI Philippine", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
+                    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                }                             
+                      
                 else
                 {
                     halfWidth = TextRenderer.MeasureText(department, font).Width / 2;
@@ -433,11 +453,11 @@ namespace qr_generator
 
                 }
             }
-            for (int row = 13851; row <= 13870; row++) // start from row 4
-            {
-                DrawImage("", "", "", "", row.ToString());
+            //for (int row = 13851; row <= 13870; row++) // start from row 4
+            //{
+            //    DrawImage("", "", "", "", row.ToString());
 
-            }
+            //}
         }
     
         public static void AddList()
