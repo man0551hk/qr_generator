@@ -45,7 +45,7 @@ namespace qr_generator
         }
 
         //DrawImage(title, lastName, firstName, perferredName, empNumber);
-        public static string DrawImage(string name, string department, string vip, string tableName, string qrCode)
+        public static string DrawImage(string name, string department, string phone, string extra, string qrCode)
         {
             Console.WriteLine("Generating images...");
 
@@ -60,232 +60,242 @@ namespace qr_generator
                 Graphics graphicsImage = Graphics.FromImage(bitmap);
                 graphicsImage.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
-                Pen blackPen = new Pen(Color.White, 40);
-                Rectangle rect = new Rectangle(1458, 251, 210, 210);
-                graphicsImage.DrawRectangle(blackPen, rect);
+                //Pen blackPen = new Pen(Color.Black, 40);
+                //Rectangle rect = new Rectangle(0, 0, 210, 210);
+                //graphicsImage.DrawRectangle(blackPen, rect);
 
+                Font font = new Font("Calibri (Body)", 108, FontStyle.Regular, GraphicsUnit.Pixel);
+                Color StringColor = System.Drawing.ColorTranslator.FromHtml("#000");
+
+                int middle = 2654/2;
+
+                int halfWidth = TextRenderer.MeasureText(name, font).Width / 2;
+                graphicsImage.DrawString(name, font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1600));
 
                 MessagingToolkit.QRCode.Codec.QRCodeEncoder encoder = new MessagingToolkit.QRCode.Codec.QRCodeEncoder();
                 encoder.QRCodeScale = 24;
                 Bitmap qrBMP = encoder.Encode(qrCode.ToString());
-                graphicsImage.DrawImage(qrBMP, 300, 920, 180, 180);
-                Color StringColor = System.Drawing.ColorTranslator.FromHtml("#000");
+                graphicsImage.DrawImage(qrBMP, middle - (800 / 2), 1760, 800, 800);
 
-                int middle = 387;
-                Font font = new Font("Arial", 36, FontStyle.Regular, GraphicsUnit.Pixel);
-                int halfWidth = 0;
+                halfWidth = TextRenderer.MeasureText("Table: " + extra, font).Width / 2;
+                graphicsImage.DrawString("Table: " + extra, font, new SolidBrush(StringColor), new Point(middle - halfWidth, 2570));
+                
+                //Color StringColor = System.Drawing.ColorTranslator.FromHtml("#000");
+                //int middle = 387;
+                //Font font = new Font("Arial", 36, FontStyle.Regular, GraphicsUnit.Pixel);
+                //int halfWidth = 0;
 
                 //graphicsImage.DrawString("Oknha Leng Sokea", font, new SolidBrush(StringColor), new Point(387, 1050));
                 //graphicsImage.DrawString("Oknha Leng Sokea", font, new SolidBrush(StringColor), new Point(148, 1050));
                 //graphicsImage.DrawString("(Anthony Tan)", font, new SolidBrush(StringColor), new Point(610, 1090));
 
-                if (name == "Oknha Leng Sokea (Anthony Tan)")
-                {
-                    halfWidth = TextRenderer.MeasureText("Oknha Leng Sokea", font).Width / 2;
-                    graphicsImage.DrawString("Oknha Leng Sokea", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
-                    halfWidth = TextRenderer.MeasureText("(Anthony Tan)", font).Width / 2;
-                    graphicsImage.DrawString("(Anthony Tan)", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1150));
-                }
-                else if (name == "King's Flair - Mr. Nordis Wan")
-                {
-                    halfWidth = TextRenderer.MeasureText("King's Flair -", font).Width / 2;
-                    graphicsImage.DrawString("King's Flair -", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
-                    halfWidth = TextRenderer.MeasureText("Mr. Nordis Wan", font).Width / 2;
-                    graphicsImage.DrawString("Mr. Nordis Wan", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1150));
-                }
-                else if (name == "King's Flair - Mr. Danny Chan")
-                {
-                    halfWidth = TextRenderer.MeasureText("King's Flair -", font).Width / 2;
-                    graphicsImage.DrawString("King's Flair -", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
-                    halfWidth = TextRenderer.MeasureText("Mr. Danny Chan", font).Width / 2;
-                    graphicsImage.DrawString("Mr. Danny Chan", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1150));
-                }
-                else if (name == "Hughgus	Liu")
-                {
-                    halfWidth = TextRenderer.MeasureText("Hughgus Liu", font).Width / 2;
-                    graphicsImage.DrawString("Hughgus Liu", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
-                }
-                else if (name == "Luciano Conceicao Goncalves")
-                {
-                    halfWidth = TextRenderer.MeasureText("Luciano Conceicao", font).Width / 2;
-                    graphicsImage.DrawString("Luciano Conceicao", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
-                    halfWidth = TextRenderer.MeasureText("Goncalves", font).Width / 2;
-                    graphicsImage.DrawString("Goncalves", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1150));
-                }
-                else if (name == "Forward Trans Co Ltd - Ms. Tang Man Sum")
-                {
-                    halfWidth = TextRenderer.MeasureText("Forward Trans Co Ltd", font).Width / 2;
-                    graphicsImage.DrawString("Forward Trans Co Ltd", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
-                    halfWidth = TextRenderer.MeasureText("Ms. Tang Man Sum", font).Width / 2;
-                    graphicsImage.DrawString("Ms. Tang Man Sum", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1150));
-                }
-                else if (name == "Forward Trans Co Ltd - Mr. Anthonio Lam")
-                {
-                    halfWidth = TextRenderer.MeasureText("Forward Trans Co Ltd", font).Width / 2;
-                    graphicsImage.DrawString("Forward Trans Co Ltd", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
-                    halfWidth = TextRenderer.MeasureText("Mr. Anthonio Lam", font).Width / 2;
-                    graphicsImage.DrawString("Mr. Anthonio Lam", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1150));
-                }
-                else 
-                {
-                    halfWidth = TextRenderer.MeasureText(name, font).Width / 2;
-                    graphicsImage.DrawString(name, font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
-                }
+                //if (name == "Oknha Leng Sokea (Anthony Tan)")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("Oknha Leng Sokea", font).Width / 2;
+                //    graphicsImage.DrawString("Oknha Leng Sokea", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
+                //    halfWidth = TextRenderer.MeasureText("(Anthony Tan)", font).Width / 2;
+                //    graphicsImage.DrawString("(Anthony Tan)", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1150));
+                //}
+                //else if (name == "King's Flair - Mr. Nordis Wan")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("King's Flair -", font).Width / 2;
+                //    graphicsImage.DrawString("King's Flair -", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
+                //    halfWidth = TextRenderer.MeasureText("Mr. Nordis Wan", font).Width / 2;
+                //    graphicsImage.DrawString("Mr. Nordis Wan", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1150));
+                //}
+                //else if (name == "King's Flair - Mr. Danny Chan")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("King's Flair -", font).Width / 2;
+                //    graphicsImage.DrawString("King's Flair -", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
+                //    halfWidth = TextRenderer.MeasureText("Mr. Danny Chan", font).Width / 2;
+                //    graphicsImage.DrawString("Mr. Danny Chan", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1150));
+                //}
+                //else if (name == "Hughgus	Liu")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("Hughgus Liu", font).Width / 2;
+                //    graphicsImage.DrawString("Hughgus Liu", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
+                //}
+                //else if (name == "Luciano Conceicao Goncalves")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("Luciano Conceicao", font).Width / 2;
+                //    graphicsImage.DrawString("Luciano Conceicao", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
+                //    halfWidth = TextRenderer.MeasureText("Goncalves", font).Width / 2;
+                //    graphicsImage.DrawString("Goncalves", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1150));
+                //}
+                //else if (name == "Forward Trans Co Ltd - Ms. Tang Man Sum")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("Forward Trans Co Ltd", font).Width / 2;
+                //    graphicsImage.DrawString("Forward Trans Co Ltd", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
+                //    halfWidth = TextRenderer.MeasureText("Ms. Tang Man Sum", font).Width / 2;
+                //    graphicsImage.DrawString("Ms. Tang Man Sum", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1150));
+                //}
+                //else if (name == "Forward Trans Co Ltd - Mr. Anthonio Lam")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("Forward Trans Co Ltd", font).Width / 2;
+                //    graphicsImage.DrawString("Forward Trans Co Ltd", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
+                //    halfWidth = TextRenderer.MeasureText("Mr. Anthonio Lam", font).Width / 2;
+                //    graphicsImage.DrawString("Mr. Anthonio Lam", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1150));
+                //}
+                //else 
+                //{
+                //    halfWidth = TextRenderer.MeasureText(name, font).Width / 2;
+                //    graphicsImage.DrawString(name, font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1110));
+                //}
 
                 
-                if (department == "HK Professionals and Senior Executives") {
-                    halfWidth = TextRenderer.MeasureText("HK Professionals", font).Width / 2;
-                    graphicsImage.DrawString("HK Professionals", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("and Senior Executives", font).Width / 2;
-                    graphicsImage.DrawString("and Senior Executives", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }
-                else if (department == "JCI Japan National President")
-                {
-                    halfWidth = TextRenderer.MeasureText("JCI Japan", font).Width / 2;
-                    graphicsImage.DrawString("JCI Japan", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
-                    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }
-                else if (department == "District Rotaract Representative Elect")
-                {
-                    halfWidth = TextRenderer.MeasureText("District Rotaract", font).Width / 2;
-                    graphicsImage.DrawString("District Rotaract", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("Representative Elect", font).Width / 2;
-                    graphicsImage.DrawString("Representative Elect", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }
-                else if (department == "JCI Foundation Committee Member ")
-                {
-                    halfWidth = TextRenderer.MeasureText("JCI Foundation", font).Width / 2;
-                    graphicsImage.DrawString("JCI Foundation", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("Committee Member", font).Width / 2;
-                    graphicsImage.DrawString("Committee Member", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }
-                else if (department == "Hong Kong Youths Unified Association")
-                {
-                    halfWidth = TextRenderer.MeasureText("Hong Kong Youths", font).Width / 2;
-                    graphicsImage.DrawString("Hong Kong Youths", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("Unified Association", font).Width / 2;
-                    graphicsImage.DrawString("Unified Association", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }
-                else if (department == "JCI Cambodia National President")
-                {
-                    halfWidth = TextRenderer.MeasureText("JCI Cambodia", font).Width / 2;
-                    graphicsImage.DrawString("JCI Cambodia", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
-                    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }
-                else if (department == "JCI VIetnam National President")
-                {
-                    halfWidth = TextRenderer.MeasureText("JCI Vietnam", font).Width / 2;
-                    graphicsImage.DrawString("JCI Vietnam", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
-                    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }
-                else if (department == "JCI Malaysia National President")
-                {
-                    halfWidth = TextRenderer.MeasureText("JCI Malaysia", font).Width / 2;
-                    graphicsImage.DrawString("JCI Malaysia", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
-                    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }
-                else if (department == "National Immidiate Past President")
-                {
-                    halfWidth = TextRenderer.MeasureText("National Immidiate", font).Width / 2;
-                    graphicsImage.DrawString("National Immidiate", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("Past President", font).Width / 2;
-                    graphicsImage.DrawString("Past President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }
-                else if (department == "Hong Kong Baptist University")
-                {
-                    halfWidth = TextRenderer.MeasureText("Hong Kong", font).Width / 2;
-                    graphicsImage.DrawString("Hong Kong", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("Baptist University", font).Width / 2;
-                    graphicsImage.DrawString("Baptist University", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }
-                else if (department == "National Convention Director")
-                {
-                    halfWidth = TextRenderer.MeasureText("National Convention", font).Width / 2;
-                    graphicsImage.DrawString("National Convention", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("Director", font).Width / 2;
-                    graphicsImage.DrawString("Director", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }
-                else if (department == "70th Anniversary Ball Chairman")
-                {
-                    halfWidth = TextRenderer.MeasureText("70th Anniversary", font).Width / 2;
-                    graphicsImage.DrawString("70th Anniversary", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("Ball Chairman", font).Width / 2;
-                    graphicsImage.DrawString("Ball Chairman", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }                    
-                else if (department == "JCI Singapore National President")
-                {
-                    halfWidth = TextRenderer.MeasureText("JCI Singapore", font).Width / 2;
-                    graphicsImage.DrawString("JCI Singapore", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("National Presidentn", font).Width / 2;
-                    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }                               
-                else if (department == "JCI Mongolia National President")
-                {
-                    halfWidth = TextRenderer.MeasureText("JCI Mongolia", font).Width / 2;
-                    graphicsImage.DrawString("JCI Mongolia", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
-                    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }                                  
-                else if (department == "JCI Macao National President")
-                {
-                    halfWidth = TextRenderer.MeasureText("JCI Macao", font).Width / 2;
-                    graphicsImage.DrawString("JCI Macao", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
-                    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }             
-                else if (department == "JCI Indonesia National President")
-                {
-                    halfWidth = TextRenderer.MeasureText("JCI Indonesia", font).Width / 2;
-                    graphicsImage.DrawString("JCI Indonesia", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
-                    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }             
-                else if (department ==  "Chartered Institute of Logistics and Transport")
-                {
-                    halfWidth = TextRenderer.MeasureText("Chartered Institute of", font).Width / 2;
-                    graphicsImage.DrawString("Chartered Institute of", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("Logistics and Transport", font).Width / 2;
-                    graphicsImage.DrawString("Logistics and Transport", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }   
-                else if (department ==  "Rotary International District 3450 ")
-                {
-                    halfWidth = TextRenderer.MeasureText("Rotary International", font).Width / 2;
-                    graphicsImage.DrawString("Rotary International", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("District 3450", font).Width / 2;
-                    graphicsImage.DrawString("District 3450", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                } 
-                else if (department ==  "JCI Vietnam National President")
-                {
-                    halfWidth = TextRenderer.MeasureText("JCI Vietnam", font).Width / 2;
-                    graphicsImage.DrawString("JCI Vietnam", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
-                    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }      
-                else if (department ==  "JCI Philippine National President")
-                {
-                    halfWidth = TextRenderer.MeasureText("JCI Philippine", font).Width / 2;
-                    graphicsImage.DrawString("JCI Philippine", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
-                    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
-                }                             
+                //if (department == "HK Professionals and Senior Executives") {
+                //    halfWidth = TextRenderer.MeasureText("HK Professionals", font).Width / 2;
+                //    graphicsImage.DrawString("HK Professionals", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("and Senior Executives", font).Width / 2;
+                //    graphicsImage.DrawString("and Senior Executives", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}
+                //else if (department == "JCI Japan National President")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("JCI Japan", font).Width / 2;
+                //    graphicsImage.DrawString("JCI Japan", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
+                //    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}
+                //else if (department == "District Rotaract Representative Elect")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("District Rotaract", font).Width / 2;
+                //    graphicsImage.DrawString("District Rotaract", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("Representative Elect", font).Width / 2;
+                //    graphicsImage.DrawString("Representative Elect", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}
+                //else if (department == "JCI Foundation Committee Member ")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("JCI Foundation", font).Width / 2;
+                //    graphicsImage.DrawString("JCI Foundation", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("Committee Member", font).Width / 2;
+                //    graphicsImage.DrawString("Committee Member", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}
+                //else if (department == "Hong Kong Youths Unified Association")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("Hong Kong Youths", font).Width / 2;
+                //    graphicsImage.DrawString("Hong Kong Youths", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("Unified Association", font).Width / 2;
+                //    graphicsImage.DrawString("Unified Association", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}
+                //else if (department == "JCI Cambodia National President")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("JCI Cambodia", font).Width / 2;
+                //    graphicsImage.DrawString("JCI Cambodia", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
+                //    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}
+                //else if (department == "JCI VIetnam National President")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("JCI Vietnam", font).Width / 2;
+                //    graphicsImage.DrawString("JCI Vietnam", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
+                //    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}
+                //else if (department == "JCI Malaysia National President")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("JCI Malaysia", font).Width / 2;
+                //    graphicsImage.DrawString("JCI Malaysia", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
+                //    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}
+                //else if (department == "National Immidiate Past President")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("National Immidiate", font).Width / 2;
+                //    graphicsImage.DrawString("National Immidiate", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("Past President", font).Width / 2;
+                //    graphicsImage.DrawString("Past President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}
+                //else if (department == "Hong Kong Baptist University")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("Hong Kong", font).Width / 2;
+                //    graphicsImage.DrawString("Hong Kong", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("Baptist University", font).Width / 2;
+                //    graphicsImage.DrawString("Baptist University", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}
+                //else if (department == "National Convention Director")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("National Convention", font).Width / 2;
+                //    graphicsImage.DrawString("National Convention", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("Director", font).Width / 2;
+                //    graphicsImage.DrawString("Director", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}
+                //else if (department == "70th Anniversary Ball Chairman")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("70th Anniversary", font).Width / 2;
+                //    graphicsImage.DrawString("70th Anniversary", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("Ball Chairman", font).Width / 2;
+                //    graphicsImage.DrawString("Ball Chairman", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}                    
+                //else if (department == "JCI Singapore National President")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("JCI Singapore", font).Width / 2;
+                //    graphicsImage.DrawString("JCI Singapore", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("National Presidentn", font).Width / 2;
+                //    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}                               
+                //else if (department == "JCI Mongolia National President")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("JCI Mongolia", font).Width / 2;
+                //    graphicsImage.DrawString("JCI Mongolia", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
+                //    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}                                  
+                //else if (department == "JCI Macao National President")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("JCI Macao", font).Width / 2;
+                //    graphicsImage.DrawString("JCI Macao", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
+                //    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}             
+                //else if (department == "JCI Indonesia National President")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("JCI Indonesia", font).Width / 2;
+                //    graphicsImage.DrawString("JCI Indonesia", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
+                //    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}             
+                //else if (department ==  "Chartered Institute of Logistics and Transport")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("Chartered Institute of", font).Width / 2;
+                //    graphicsImage.DrawString("Chartered Institute of", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("Logistics and Transport", font).Width / 2;
+                //    graphicsImage.DrawString("Logistics and Transport", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}   
+                //else if (department ==  "Rotary International District 3450 ")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("Rotary International", font).Width / 2;
+                //    graphicsImage.DrawString("Rotary International", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("District 3450", font).Width / 2;
+                //    graphicsImage.DrawString("District 3450", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //} 
+                //else if (department ==  "JCI Vietnam National President")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("JCI Vietnam", font).Width / 2;
+                //    graphicsImage.DrawString("JCI Vietnam", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
+                //    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}      
+                //else if (department ==  "JCI Philippine National President")
+                //{
+                //    halfWidth = TextRenderer.MeasureText("JCI Philippine", font).Width / 2;
+                //    graphicsImage.DrawString("JCI Philippine", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //    halfWidth = TextRenderer.MeasureText("National President", font).Width / 2;
+                //    graphicsImage.DrawString("National President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
+                //}                             
                       
-                else
-                {
-                    halfWidth = TextRenderer.MeasureText(department, font).Width / 2;
-                    graphicsImage.DrawString(department, font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
-                }
+                //else
+                //{
+                //    halfWidth = TextRenderer.MeasureText(department, font).Width / 2;
+                //    graphicsImage.DrawString(department, font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1200));
+                //}
                 //halfWidth = TextRenderer.MeasureText("Past President", font).Width / 2;
                 //graphicsImage.DrawString("Past President", font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1240));
 
-                halfWidth = TextRenderer.MeasureText(tableName, font).Width / 2;
-                graphicsImage.DrawString(tableName, font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1290));
+                //halfWidth = TextRenderer.MeasureText(tableName, font).Width / 2;
+                //graphicsImage.DrawString(tableName, font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1290));
 
-                halfWidth = TextRenderer.MeasureText(vip, font).Width;
-                graphicsImage.DrawString(vip, font, new SolidBrush(StringColor), new Point(625 - halfWidth, 1330));
+                //halfWidth = TextRenderer.MeasureText(vip, font).Width;
+                //graphicsImage.DrawString(vip, font, new SolidBrush(StringColor), new Point(625 - halfWidth, 1330));
                 //int middle = 1558;
                 //int fontSize = 55;
                 //foreach (string str in strList)
@@ -337,7 +347,7 @@ namespace qr_generator
                 //halfWidth = TextRenderer.MeasureText(empNumber, font).Width / 2;
                 //graphicsImage.DrawString(empNumber, font, new SolidBrush(StringColor), new Point(middle - halfWidth + 5 ,720));
 
-                bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/ticket_" + qrCode + ".jpg");
+                bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/" + phone + ".jpg");
                
             }
             catch (Exception ex)
@@ -392,12 +402,8 @@ namespace qr_generator
 
             ISheet sheet = hssfwb.GetSheetAt(0);
 
-            //int qrCode = 11546;
-
-            //qrCode = 12507;
-
-
-            for (int row = 1; row <= sheet.LastRowNum; row++) // start from row 4
+            //552
+            for (int row = 1; row <= 552; row++) // start from row 4
             {
                 if (sheet.GetRow(row) != null) //null is when the row only contains empty cells 
                 {
@@ -405,22 +411,20 @@ namespace qr_generator
 
                     ICell nameCell = irow.GetCell(0);
                     ICell departmentCell = irow.GetCell(1);
-                    ICell typeCell = irow.GetCell(2);
-                    ICell tableNameCell = irow.GetCell(3);
+                    ICell phoneCell = irow.GetCell(2);
+                    ICell extraCell = irow.GetCell(3);
                     ICell qrCodeCell = irow.GetCell(4);
 
-                    if (nameCell != null && departmentCell != null && typeCell != null && tableNameCell != null && qrCodeCell != null)
+                    if (nameCell != null && departmentCell != null && phoneCell != null && extraCell != null && qrCodeCell != null)
                     {
                         string name = nameCell.StringCellValue;
                         string department = departmentCell.StringCellValue;
-                        string type = typeCell.StringCellValue;
-                        string tableName = tableNameCell.StringCellValue;
+                        string phone = phoneCell.NumericCellValue.ToString();
+                        string extra = extraCell.NumericCellValue.ToString();
                         string qrCode = qrCodeCell.NumericCellValue.ToString();
 
-                        if (type == "Normal") {
-                            type = "";
-                        }
-                        DrawImage(name, department, type, tableName, qrCode);
+                        Console.Write(name + " " + department + " " + phone + " " + extra + " " + qrCode);
+                        DrawImage(name, department, phone, extra, qrCode);
 
                         //string title = titleCell.StringCellValue;
                         //string lastName = lastNameCell.StringCellValue;
