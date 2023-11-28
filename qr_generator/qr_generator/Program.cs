@@ -45,7 +45,8 @@ namespace qr_generator
         }
 
         //DrawImage(title, lastName, firstName, perferredName, empNumber);
-        public static string DrawImage(string name, string department, string phone, string extra, string qrCode)
+        //public static string DrawImage(string name, string department, string phone, string extra, string qrCode)
+        public static string DrawImage(string name,string phone,  string qrCode, string extra)
         {
             Console.WriteLine("Generating images...");
 
@@ -64,21 +65,44 @@ namespace qr_generator
                 //Rectangle rect = new Rectangle(0, 0, 210, 210);
                 //graphicsImage.DrawRectangle(blackPen, rect);
 
-                Font font = new Font("Calibri (Body)", 108, FontStyle.Regular, GraphicsUnit.Pixel);
+                if (name == "Connie Choi (Amazing Chapter)")
+                {
+                    name = "Connie Choi (Amazing)";
+                }
+                else if (name == "Joyce Chow (Amazing Chapter)")
+                {
+                    name = "Joyce Chow (Amazing)";
+                }
+
+
+                int fontSize = 36;
+                int middle = 907 / 2 + 17;
+                if (name == "Shiu Hang Ip Stanley" || name == "Lam Sze Long Sharon" || name == "TSZ YAN GIANN LO"
+                    || name == "Wai Shun, Wilson Ng" || name == "Thera Lee Hau Yee" || name == "Albert Ko (Across)" || name == "CHUNG WING MUI"
+                    || name == "Joyce Chow (Amazing)" || name == "Connie Choi (Amazing)"
+                    )
+                {
+                    fontSize = 30;
+                    middle = 907 / 2 + 12;
+                }
+
+                Font font = new Font("Calibri (Body)", fontSize, FontStyle.Regular, GraphicsUnit.Pixel);
                 Color StringColor = System.Drawing.ColorTranslator.FromHtml("#000");
 
-                int middle = 2654/2;
-
+    
                 int halfWidth = TextRenderer.MeasureText(name, font).Width / 2;
-                graphicsImage.DrawString(name, font, new SolidBrush(StringColor), new Point(middle - halfWidth, 1600));
+                graphicsImage.DrawString(name, font, new SolidBrush(StringColor), new Point(middle - halfWidth, 791));
 
+
+                middle = 907 / 2 + 17;
                 MessagingToolkit.QRCode.Codec.QRCodeEncoder encoder = new MessagingToolkit.QRCode.Codec.QRCodeEncoder();
                 encoder.QRCodeScale = 24;
                 Bitmap qrBMP = encoder.Encode(qrCode.ToString());
-                graphicsImage.DrawImage(qrBMP, middle - (800 / 2), 1760, 800, 800);
+                graphicsImage.DrawImage(qrBMP, middle - 121 , 833, 230, 230);
 
+          
                 halfWidth = TextRenderer.MeasureText("Table: " + extra, font).Width / 2;
-                graphicsImage.DrawString("Table: " + extra, font, new SolidBrush(StringColor), new Point(middle - halfWidth, 2570));
+                graphicsImage.DrawString("Table: " + extra, font, new SolidBrush(StringColor), new Point(middle - halfWidth, 830 + 230));
                 
                 //Color StringColor = System.Drawing.ColorTranslator.FromHtml("#000");
                 //int middle = 387;
@@ -347,7 +371,7 @@ namespace qr_generator
                 //halfWidth = TextRenderer.MeasureText(empNumber, font).Width / 2;
                 //graphicsImage.DrawString(empNumber, font, new SolidBrush(StringColor), new Point(middle - halfWidth + 5 ,720));
 
-                bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/" + phone + ".jpg");
+                bitmap.Save(AppDomain.CurrentDomain.BaseDirectory + @"ticketImg/" + qrCode +"-" + name + "-" + phone + ".jpg");
                
             }
             catch (Exception ex)
@@ -395,7 +419,7 @@ namespace qr_generator
             Console.WriteLine("Start...");
 
             XSSFWorkbook hssfwb;
-            using (FileStream file = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "ticket.xlsx", FileMode.Open, FileAccess.Read))
+            using (FileStream file = new FileStream(AppDomain.CurrentDomain.BaseDirectory + "tickets.xlsx", FileMode.Open, FileAccess.Read))
             {
                 hssfwb = new XSSFWorkbook(file);
             }
@@ -403,28 +427,37 @@ namespace qr_generator
             ISheet sheet = hssfwb.GetSheetAt(0);
 
             //552
-            for (int row = 1; row <= 552; row++) // start from row 4
+            for (int row = 1; row <= 614; row++) // start from row 4
             {
                 if (sheet.GetRow(row) != null) //null is when the row only contains empty cells 
                 {
                     IRow irow = sheet.GetRow(row);
 
-                    ICell nameCell = irow.GetCell(0);
-                    ICell departmentCell = irow.GetCell(1);
+                    ICell qrCodeCell = irow.GetCell(0);
+                    ICell nameCell = irow.GetCell(1);
+                    //ICell departmentCell = irow.GetCell(1);
                     ICell phoneCell = irow.GetCell(2);
                     ICell extraCell = irow.GetCell(3);
-                    ICell qrCodeCell = irow.GetCell(4);
+               
 
-                    if (nameCell != null && departmentCell != null && phoneCell != null && extraCell != null && qrCodeCell != null)
+                    //if (nameCell != null && departmentCell != null && phoneCell != null && extraCell != null && qrCodeCell != null)
+                    if (nameCell != null && phoneCell != null && extraCell != null && qrCodeCell != null)
                     {
                         string name = nameCell.StringCellValue;
-                        string department = departmentCell.StringCellValue;
-                        string phone = phoneCell.NumericCellValue.ToString();
+                        //string department = departmentCell.StringCellValue;
+                        string phone = "";
+                        try
+                        {
+                           phone = phoneCell.NumericCellValue.ToString();
+                        }
+                        catch (Exception ex) {
+                            phone = phoneCell.StringCellValue;
+                        }
                         string extra = extraCell.NumericCellValue.ToString();
                         string qrCode = qrCodeCell.NumericCellValue.ToString();
 
-                        Console.Write(name + " " + department + " " + phone + " " + extra + " " + qrCode);
-                        DrawImage(name, department, phone, extra, qrCode);
+                        Console.Write(name + " " + phone + " " + qrCode + " " + extraCell);
+                        DrawImage(name, phone, qrCode, extra);
 
                         //string title = titleCell.StringCellValue;
                         //string lastName = lastNameCell.StringCellValue;
